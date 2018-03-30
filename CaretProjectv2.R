@@ -52,6 +52,7 @@ halfHalfTest.white <- white[-halfHalf,]
 # kknn.grid <- expand.grid(kmax = seq(1,30,2), distance = c(1, 2),
 #                         kernel = c("rectangular", "gaussian", "cos"))
 # #
+
 #  
 # # --- kknn train permutations --- #
 # # # format: kknn <size> <kernel>, e.g. 
@@ -113,14 +114,29 @@ halfHalfTest.white <- white[-halfHalf,]
 
 # --- Multi-Layer Perceptron Neural network grid --- #
 
-mlp.grid <- expand.grid(layer1 = c(5, 6, 7, 8, 9, 10, 11, 12), 
-                        layer2 = c(5, 6, 7, 8, 9, 10, 11, 12), 
-                        layer3 = c(5, 6, 7, 8, 9, 10, 11, 12))
+mlp.grid <- expand.grid(layer1 = c(1, 2, 3, 4, 5, 6), 
+                        layer2 = c(1, 2, 3), 
+                        layer3 = 3)
 
+mlpthree.grid <- expand.grid(layer1 = c(1, 2, 3, 4, 5, 6), 
+                             layer2 = c(1, 2, 3), 
+                             layer3 = c(1, 2, 3))
+
+mlpzero.grid <- expand.grid(layer1 = c(1,2,3,4,5), layer2 = 1, layer3 = 1)
 # --- MLP model permutations --- #
 mlpET.train <- train(quality ~ ., data = eightTwoTrain.white, method = "mlpML",
                      trControl = t.ctrl, tuneGrid = mlp.grid,
                      preProcess = c("center", "scale"))
+
+mlpETzero.train <- train(quality ~ ., data = eightTwoTrain.white, method = "mlpML", 
+                         trControl = t.ctrl, tuneGrid = mlpzero.grid,
+                         preProcess = c("center", "scale"))
+
+mlpETthree.train <- train(quality ~ ., data = eightTwoTrain.white, method = "mlpML", 
+                         trControl = t.ctrl, tuneGrid = mlpthree.grid,
+                         preProcess = c("center", "scale"))
+
+
 # mlpOT.train <- train(quality ~ ., data = oneThirdTrain.white, method = "mlpML", 
 #                      trControl = t.ctrl, tuneGrid = mlp.grid, 
 #                      preProcess = c("center", "scale"))
